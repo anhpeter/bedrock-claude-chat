@@ -16,7 +16,7 @@ type_sync_status = Literal[
 class EmbeddingParams(BaseSchema):
     chunk_size: int
     chunk_overlap: int
-    enable_partition_pdf: bool
+    enable_partition_pdf: bool = False
 
 
 class GenerationParams(BaseSchema):
@@ -50,11 +50,11 @@ class BotInput(BaseSchema):
     id: str
     title: str
     instruction: str
-    description: str | None
-    embedding_params: EmbeddingParams | None
-    generation_params: GenerationParams | None
-    search_params: SearchParams | None
-    knowledge: Knowledge | None
+    description: str | None = None
+    embedding_params: EmbeddingParams | None = None
+    generation_params: GenerationParams | None = None
+    search_params: SearchParams | None = None
+    knowledge: Knowledge | None = None
 
 
 class BotModifyInput(BaseSchema):

@@ -60,7 +60,7 @@ class MessageInput(BaseSchema):
     role: str
     content: list[Content]
     model: type_model_name
-    parent_message_id: str | None
+    parent_message_id: str | None = None
     message_id: str | None = Field(
         None, description="Unique message id. If not provided, it will be generated."
     )

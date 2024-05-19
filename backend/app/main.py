@@ -1,3 +1,7 @@
+import uvicorn
+from dotenv import load_dotenv
+
+load_dotenv()
 import logging
 import os
 import traceback
@@ -9,11 +13,13 @@ from app.repositories.common import (
     RecordNotFoundError,
     ResourceConflictError,
 )
-from app.routes.admin import router as admin_router
-from app.routes.api_publication import router as api_publication_router
+
+# from app.routes.admin import router as admin_router
+# from app.routes.api_publication import router as api_publication_router
 from app.routes.bot import router as bot_router
 from app.routes.conversation import router as conversation_router
-from app.routes.published_api import router as published_api_router
+
+# from app.routes.published_api import router as published_api_router
 from app.user import User
 from app.utils import is_running_on_lambda
 from fastapi import Depends, FastAPI, Request
@@ -27,7 +33,6 @@ from starlette.types import ASGIApp, Message
 
 CORS_ALLOW_ORIGINS = os.environ.get("CORS_ALLOW_ORIGINS", "*")
 PUBLISHED_API_ID = os.environ.get("PUBLISHED_API_ID", None)
-
 is_published_api = PUBLISHED_API_ID is not None
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s - %(message)s")
@@ -55,10 +60,10 @@ app = FastAPI(
 if not is_published_api:
     app.include_router(conversation_router)
     app.include_router(bot_router)
-    app.include_router(api_publication_router)
-    app.include_router(admin_router)
-else:
-    app.include_router(published_api_router)
+    # app.include_router(api_publication_router)
+    # app.include_router(admin_router)
+# else:
+# app.include_router(published_api_router)
 
 
 app.add_middleware(
@@ -127,3 +132,7 @@ async def add_log_requests(request: Request, call_next: ASGIApp):
     response = await call_next(request)  # type: ignore
 
     return response
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
